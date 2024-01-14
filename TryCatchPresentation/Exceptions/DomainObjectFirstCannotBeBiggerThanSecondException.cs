@@ -1,4 +1,4 @@
-﻿namespace TryCatchPresentation
+﻿namespace TryCatchPresentation.Exceptions
 {
     [Serializable]
     internal class DomainObjectFirstCannotBeBiggerThanSecondException : Exception

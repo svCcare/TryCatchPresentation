@@ -1,4 +1,6 @@
-﻿namespace TryCatchPresentation
+﻿using TryCatchPresentation.Exceptions;
+
+namespace TryCatchPresentation
 {
     internal class Program
     {
@@ -21,9 +23,8 @@
                 Console.WriteLine("9. Will General Exception be handled by specific catch?");
                 Console.WriteLine("10. Very popular endpoint that could potentially throw exception. But won't");
                 Console.WriteLine("11. How about centralized exception handling?");
-
+                Console.WriteLine("12. ApplicationException?");
                 Console.WriteLine("0. Exit");
-
                 Console.Write("Enter the number of your choice: ");
 
                 // Read user input
@@ -109,7 +110,7 @@
                                 domainObject.MethodThatWillThrowException(3);
                                 break;
                             }
-                            catch (Exception ex)
+                            catch (IndexOutOfRangeException ex)
                             {
                                 Console.WriteLine($"{ex.Message}");
                                 break;
@@ -130,6 +131,20 @@
                             catch (AccessingInvalidIndexOfDomainObjectCollectionException ex) when (ex.Index > ex.CollectionSize)
                             {
                                 Console.WriteLine($"{ex.Message}");
+                                break;
+                            }
+                            //https://thomaslevesque.com/2015/06/21/exception-filters-in-c-6/
+                            catch (AccessingInvalidIndexOfDomainObjectCollectionException ex)
+                            {
+                                if (ex.Index < 0)
+                                {
+                                    Console.WriteLine($"{ex.Message}");
+                                    Console.WriteLine($"Index cannot be negative");
+                                }
+                                if (ex.Index > ex.CollectionSize)
+                                {
+                                    Console.WriteLine($"{ex.Message}");
+                                }
                                 break;
                             }
                             catch (Exception ex)
@@ -158,7 +173,7 @@
                             var result = domainObject.VeryPopularMethodThatCouldPossiblyThrowException(30);
                             Console.WriteLine(result);
                             break;
-                        case 11: // avoiding performance issues when throwing many exceptions
+                        case 11: // centralized way of handling errors
                             try
                             {
                                 ThrowingMethodAnotherException();
@@ -169,6 +184,16 @@
                                 break;
                             }
                             break;
+                        case 12: // ApplicationException
+                            try
+                            {
+                                throw new ApplicationException();
+                            }
+                            catch (ApplicationException ex)
+                            {
+                                ErrorHandler.HandleException(ex);
+                                break;
+                            }
                         case 0:
                             Console.WriteLine("Exiting program. Goodbye!");
                             return; // Exit the program

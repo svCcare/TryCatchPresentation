@@ -1,4 +1,6 @@
-﻿namespace TryCatchPresentation
+﻿using TryCatchPresentation.Exceptions;
+
+namespace TryCatchPresentation.Models
 {
     internal class DomainObject
     {
@@ -66,7 +68,6 @@
             TryGetValue(index, out int? result);
             return result;
         }
-
 
         private bool TryGetValue(int index, out int? result)
         {
